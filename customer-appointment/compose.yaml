@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: customer-appointment-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: customer_appointmentdb
+      MYSQL_ROOT_PASSWORD: Touchlover@23
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pTouchlover@23"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  customer-appointment:
+    build: .
+    container_name: customer-appointment-web
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: mysql
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/customer_appointmentdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Touchlover@23
+      SPRING_DOCKER_COMPOSE_ENABLED: "false"
+
+volumes:
+  mysql_data:

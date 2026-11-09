@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Branch Appointment - Capitec Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --capitec-blue: #002b49;
+            --capitec-red: #e01a22;
+            --capitec-light: #f4f6f8;
+        }
+
+        body {
+            background-color: var(--capitec-light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .navbar-capitec {
+            background-color: var(--capitec-blue);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: #ffffff !important;
+        }
+
+        .brand-dot {
+            color: var(--capitec-red);
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1e8ed;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--capitec-blue);
+            font-size: 0.9rem;
+        }
+
+        .btn-capitec {
+            background-color: var(--capitec-red);
+            color: white;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 12px 24px;
+            border: none;
+        }
+
+        .btn-capitec:hover {
+            background-color: #b8141b;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-capitec">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fa-solid fa-building-columns me-2"></i>CAPITEC<span class="brand-dot">.</span>
+            </a>
+            <div class="ms-auto d-flex gap-2">
+                <a th:href="@{/}" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-home me-1"></i> Home</a>
+                <a th:href="@{/search}" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-search me-1"></i>
+                    Search</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-md-11">
+                <div class="card form-card p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <span class="badge bg-danger mb-2 px-3 py-2 text-uppercase">Branch Booking</span>
+                        <h2 class="fw-bold" style="color: var(--capitec-blue);">Schedule Branch Appointment</h2>
+                        <p class="text-muted">Enter your details and choose your preferred Capitec branch and
+                            appointment slot</p>
+                    </div>
+
+                    <!-- Alerts -->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i><strong><span
+                                th:text="${error}"></span></strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <form th:action="@{/appointment}" method="post" th:object="${appointment}">
+                        <!-- Customer Information -->
+                        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: var(--capitec-blue);">
+                            <i class="fa-solid fa-user me-2 text-danger"></i>Customer Information
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa-solid fa-signature me-1"></i> Full Name *</label>
+                                <input type="text" name="customerName" th:field="*{customerName}" class="form-control"
+                                    placeholder="e.g. Sipho Nkosi" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa-solid fa-envelope me-1"></i> Email Address
+                                    *</label>
+                                <input type="email" name="customeremail" th:field="*{customeremail}"
+                                    class="form-control" placeholder="e.g. sipho.nkosi@example.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa-solid fa-phone me-1"></i> Phone Number *</label>
+                                <input type="text" name="phone" th:field="*{phone}" class="form-control"
+                                    placeholder="e.g. +27 82 123 4567" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa-solid fa-credit-card me-1"></i> Capitec Account /
+                                    ID Number</label>
+                                <input type="text" name="accountNumber" th:field="*{accountNumber}" class="form-control"
+                                    placeholder="e.g. 1058923412 or SA ID Number">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label"><i class="fa-solid fa-map-pin me-1"></i> Residential
+                                    Address</label>
+                                <input type="text" name="address" th:field="*{address}" class="form-control"
+                                    placeholder="e.g. 15 Adderley St, Cape Town">
+                            </div>
+                        </div>
+
+                        <!-- Appointment Preferences -->
+                        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: var(--capitec-blue);">
+                            <i class="fa-solid fa-calendar-days me-2 text-danger"></i>Branch & Schedule Details
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa-solid fa-building-columns me-1"></i> Select
+                                    Branch *</label>
+                                <select name="branch_id" th:field="*{branch_id}" class="form-select" required>
+                                    <option value="" disabled selected>-- Choose Branch --</option>
+                                    <option th:each="b : ${branches}" th:value="${b.id}"
+                                        th:text="${b.branchName + ' (' + b.city + ')'}">
+                                        Capitec Foreshore Branch
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa-solid fa-briefcase me-1"></i> Service Required
+                                    *</label>
+                                <select name="serviceType" th:field="*{serviceType}" class="form-select" required>
+                                    <option value="Loan Consultation">Loan Consultation</option>
+                                    <option value="Account Opening">Account Opening (Global One)</option>
+                                    <option value="Financial Planning">Financial Planning & Investment</option>
+                                    <option value="Card & PIN Services">Card Replacement & PIN Reset</option>
+                                    <option value="Cash & Forex Services">Cash Deposits / Forex Services</option>
+                                    <option value="General Banking Enquiry">General Banking Enquiry</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label"><i class="fa-regular fa-calendar me-1"></i> Appointment Date
+                                    *</label>
+                                <input type="date" name="appointmentDate" th:field="*{appointmentDate}"
+                                    class="form-control" id="appointmentDate" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label"><i class="fa-regular fa-clock me-1"></i> Preferred Time Slot
+                                    *</label>
+                                <select name="appointmentTime" th:field="*{appointmentTime}" class="form-select"
+                                    required>
+                                    <option value="09:00 AM">09:00 AM</option>
+                                    <option value="10:00 AM" selected>10:00 AM</option>
+                                    <option value="11:30 AM">11:30 AM</option>
+                                    <option value="01:00 PM">01:00 PM</option>
+                                    <option value="02:30 PM">02:30 PM</option>
+                                    <option value="03:30 PM">03:30 PM</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label"><i class="fa-solid fa-hourglass-half me-1"></i>
+                                    Duration</label>
+                                <select name="appointmentDuration" th:field="*{appointmentDuration}"
+                                    class="form-select">
+                                    <option value="30 min">30 Minutes</option>
+                                    <option value="45 min">45 Minutes</option>
+                                    <option value="60 min">60 Minutes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Initial Status -->
+                        <input type="hidden" name="status" value="booked">
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-capitec btn-lg">
+                                <i class="fa-solid fa-check-circle me-2"></i>Confirm & Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set default date to tomorrow
+        const dateInput = document.getElementById('appointmentDate');
+        if (dateInput && !dateInput.value) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.value = tomorrow.toISOString().split('T')[0];
+            dateInput.min = new Date().toISOString().split('T')[0];
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation - Capitec Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --capitec-blue: #002b49;
+            --capitec-red: #e01a22;
+            --capitec-green: #0a8754;
+            --capitec-light: #f4f6f8;
+        }
+        body {
+            background-color: var(--capitec-light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        .navbar-capitec {
+            background-color: var(--capitec-blue);
+        }
+        .navbar-brand {
+            font-weight: 800;
+            color: #ffffff !important;
+        }
+        .ticket-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 43, 73, 0.12);
+            border: 1px solid #dee2e6;
+            overflow: hidden;
+        }
+        .ticket-header {
+            background: linear-gradient(135deg, #002b49 0%, #004b7a 100%);
+            color: white;
+            padding: 30px;
+            border-bottom: 4px solid var(--capitec-red);
+        }
+        .ref-badge {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            background-color: #ffffff;
+            color: var(--capitec-blue);
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-weight: 800;
+            display: inline-block;
+        }
+        .sim-device {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--capitec-green);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .sim-email {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--capitec-blue);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .ticket-card {
+                box-shadow: none !important;
+                border: 1px solid #000;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-capitec no-print">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fa-solid fa-building-columns me-2"></i>CAPITEC<span style="color: var(--capitec-red);">.</span>
+            </a>
+            <div class="ms-auto d-flex gap-2">
+                <a th:href="@{/}" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-home me-1"></i> Home</a>
+                <a th:href="@{/search}" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-search me-1"></i> Search</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-md-11">
+                <div class="card ticket-card">
+                    <!-- Ticket Header -->
+                    <div class="ticket-header text-center">
+                        <div class="mb-2">
+                            <i class="fa-solid fa-circle-check fa-3x text-success bg-white rounded-circle p-1"></i>
+                        </div>
+                        <h2 class="fw-bold mb-1">Appointment Confirmed!</h2>
+                        <p class="text-white-50 mb-3">Your branch visit has been scheduled and confirmed in our system.</p>
+                        <div>
+                            <span class="small text-uppercase text-white-50 d-block mb-1">Appointment Reference</span>
+                            <span class="ref-badge" th:text="${appointment.id}">CPT-10023</span>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Details -->
+                    <div class="p-4 p-md-5">
+                        <h5 class="fw-bold mb-3" style="color: var(--capitec-blue);">
+                            <i class="fa-solid fa-receipt me-2 text-danger"></i>Booking Summary
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <label class="text-muted small">Customer Name</label>
+                                <div class="fw-bold fs-6" th:text="${appointment.customerName}">Sipho Nkosi</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted small">Branch Location</label>
+                                <div class="fw-bold fs-6 text-primary" th:text="${appointment.branchName}">Capitec Foreshore Branch</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted small">Service Type</label>
+                                <div class="fw-bold fs-6" th:text="${appointment.serviceType}">Loan Consultation</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted small">Date & Time Slot</label>
+                                <div class="fw-bold fs-6">
+                                    <i class="fa-regular fa-calendar-check me-1 text-success"></i>
+                                    <span th:text="${appointment.appointmentDate}">2026-11-07</span> at 
+                                    <span th:text="${appointment.appointmentTime}">10:00 AM</span>
+                                    (<span th:text="${appointment.appointmentDuration}">30 min</span>)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted small">Customer Email</label>
+                                <div class="fw-bold" th:text="${appointment.customeremail}">sipho@example.com</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted small">Phone Number</label>
+                                <div class="fw-bold" th:text="${appointment.phone}">+27 82 123 4567</div>
+                            </div>
+                            <div class="col-sm-6" th:if="${appointment.accountNumber}">
+                                <label class="text-muted small">Account / ID</label>
+                                <div class="fw-bold" th:text="${appointment.accountNumber}">1058923412</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted small">Booking Status</label>
+                                <div>
+                                    <span class="badge bg-success px-3 py-2 text-uppercase" th:text="${appointment.status}">BOOKED</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Simulated Confirmation Notification (Brief Requirement) -->
+                        <div class="border-top pt-4 mt-4">
+                            <h5 class="fw-bold mb-3" style="color: var(--capitec-blue);">
+                                <i class="fa-solid fa-satellite-dish me-2 text-success"></i>Simulated Automated Confirmation
+                            </h5>
+                            <p class="text-muted small mb-3">
+                                The system has automatically simulated customer communication notifications via SMS and Email:
+                            </p>
+
+                            <!-- Simulated SMS -->
+                            <div class="sim-device mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-bold text-success small"><i class="fa-solid fa-comment-sms me-1"></i> SIMULATED SMS SENT</span>
+                                    <span class="badge bg-success text-white">Delivered</span>
+                                </div>
+                                <p class="mb-0 small text-dark font-monospace">
+                                    <strong>Capitec Bank:</strong> Hi <span th:text="${appointment.customerName}">Customer</span>, your appointment (Ref: <span th:text="${appointment.id}">CPT-10023</span>) at <span th:text="${appointment.branchName}">Branch</span> on <span th:text="${appointment.appointmentDate}">Date</span> at <span th:text="${appointment.appointmentTime}">10:00 AM</span> for <span th:text="${appointment.serviceType}">Service</span> is CONFIRMED. Please bring your SA ID or passport.
+                                </p>
+                            </div>
+
+                            <!-- Simulated Email -->
+                            <div class="sim-email">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-bold text-primary small"><i class="fa-solid fa-envelope-circle-check me-1"></i> SIMULATED EMAIL DISPATCHED</span>
+                                    <span class="badge bg-primary text-white">Sent</span>
+                                </div>
+                                <div class="small text-muted mb-1">To: <span th:text="${appointment.customeremail}">customer@example.com</span> | Subject: Capitec Branch Appointment Confirmation [<span th:text="${appointment.id}">CPT-10023</span>]</div>
+                                <p class="mb-0 small text-dark font-monospace">
+                                    Dear <span th:text="${appointment.customerName}">Customer</span>, thank you for scheduling your branch appointment. Your reference number is <strong th:text="${appointment.id}">CPT-10023</strong>. We look forward to assisting you at our <span th:text="${appointment.branchName}">Branch</span>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top no-print">
+                            <button onclick="window.print()" class="btn btn-outline-dark">
+                                <i class="fa-solid fa-print me-1"></i> Print / Save Slip
+                            </button>
+                            <a th:href="@{/search}" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-search me-1"></i> Track Appointment
+                            </a>
+                            <a th:href="@{/appointment}" class="btn btn-danger ms-auto">
+                                <i class="fa-solid fa-plus me-1"></i> Book Another Appointment
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
